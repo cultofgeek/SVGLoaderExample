@@ -1,0 +1,20 @@
+{
+  "name": "SVG Loader",
+  "description": "Loader demo using Codrops SVG Loader animation along with imageLoaded",
+  "version": "0.1.0",
+  "author": {
+    "name": "Won J You",
+    "url": "http://seventyseven.net"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.4",
+    "grunt-html-validation": "^0.1.14",
+    "grunt-contrib-uglify": "^0.4.0",
+    "grunt-contrib-concat": "^0.3.0",
+    "grunt-contrib-copy": "^0.5.0",
+    "grunt-usemin": "^2.3.0"
+  },
+  "scripts": {
+    "postinstall": "grunt postinstall"
+  }
+}

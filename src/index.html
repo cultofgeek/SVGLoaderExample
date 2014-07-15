@@ -1,0 +1,130 @@
+<html>
+<head>
+	<title>Page Preloader</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+	<meta name="viewport" content="width=device-width, initial-scale=1"> 	
+	
+	<link rel="stylesheet" type="text/css" href="css/normalize.css" />
+	<link rel="stylesheet" type="text/css" href="css/demo.css" />
+	
+	<!--[if IE]>
+  	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+
+	<!-- build:js js/lib/package.min.js -->
+	<script>
+	paceOptions  = {
+		startOnPageLoad: false
+	}; 
+    
+	</script>	
+	<script src="js/lib/snap.svg-min.js"></script>	
+	<script src="js/lib/jquery-2.1.1.min.js"></script>
+	<script src="js/lib/imagesloaded.pkgd.min.js"></script>
+	<!-- endbuild -->
+	<!-- build:js js/preload.min.js -->
+	<script src="js/preload.js"></script>
+	<!-- endbuild -->
+</head>
+	<body>
+		
+		<div id="pagewrap" class="pagewrap">
+			<div class="container show" id="page-1">
+
+				<header class="codrops-header">
+					<h1>Page Loading Effects <span>Modern ways of revealing new content</span></h1>
+				</header>
+				<section class="columns clearfix">
+					<div class="column">
+						<p>To start the page loading animation, click the following link:</p>
+						<p><a class="pageload-link" href="#page-2">Show Page Loader</a></p>
+					</div>
+				</section>
+
+			</div><!-- /container -->
+
+			<!-- The new page dummy; this would be dynamically loaded content -->
+			<div class="container" id="page-2">
+			<section>
+				<h2>This is an example for a new page.</h2>
+				<p><a class="pageload-link" href="#page-1">Go back</a></p>
+				
+				<div class="gallery">
+				</div>
+			</section>
+			</div><!-- /container -->
+<div id="loadbar"></div>
+			<div id="loader" class="pageload-overlay" data-opening="M 0,0 80,-10 80,60 0,70 0,0" data-closing="M 0,-10 80,-20 80,-10 0,0 0,-10">
+				
+				<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 80 60" preserveAspectRatio="none">
+					<path d="M 0,70 80,60 80,80 0,80 0,70"/>
+				</svg>
+			</div><!-- /pageload-overlay -->
+			
+		</div><!-- /pagewrap -->
+		<!-- build:js js/lib/svg.min.js -->
+		<script src="js/lib/classie.js"></script>
+		<script src="js/lib/svgLoader.js"></script>
+		<!-- endbuild -->
+		<script>
+			$(function() {
+				var pageWrap = document.getElementById( 'pagewrap' ),
+					pages = [].slice.call( pageWrap.querySelectorAll( 'div.container' ) ),
+					currentPage = 0;
+					
+
+				function reveal(){
+					console.log('reveal called');
+
+					classie.removeClass( pages[ currentPage ], 'show' );
+					// update..
+					currentPage = currentPage ? 0 : 1;
+					classie.addClass( pages[ currentPage ], 'show' );			
+				}
+					
+					
+				function getImages(num) {
+					console.log("getImages called : " + num);
+				  var images = '';
+				  for ( var i = 0; i < num; i++ ) {
+					images += getImageItem();
+				  }
+				  return images;
+				}
+
+				// return <img> 
+				function getImageItem() {
+
+				  var width = 1000;
+				  var height = 1000;
+				  var randNum = Math.ceil( Math.random() * 1000 );
+
+				  var src = 'http://lorempixel.com/' + width + '/' + height + '/' + '?' + randNum;
+				  var image = '<img src="' + src + '" />';
+				  return image;
+				}
+					
+					
+				function init() {
+					$('a.pageload-link').click( function( ev ) {
+							ev.preventDefault();
+
+							var html = getImages(10);
+							$('#page-2 .gallery').html(html);
+
+							var loadElement = document.getElementById( 'loader' );
+
+							var images = $('#page-2 .gallery img');
+			
+							var loadMe = new Preloader("#loadbar", loadElement, 
+												{images:images, onLoaded:reveal, waitForAnimation:true, autoHide:false});
+							loadMe.start();							
+
+						} );	
+				}
+
+				init();
+			});
+		</script>
+	</body>
+</html>
